@@ -43,7 +43,8 @@ func main() {
 	if err != nil {
 		fmt.Println("Something went wrong")
 	}
-	for x := range myData {
+	for x, y := range myData {
 		fmt.Println(x)
+		fmt.Println(y)
 	}
 }
