@@ -53,6 +53,7 @@ func parseIngredients(scanner *bufio.Scanner) ([]Ingredient, error) {
 		if strings.HasPrefix(line, "-") {
 
 			// Find title
+			line = strings.TrimPrefix(line, "-")
 			parts := strings.Fields(line)
 			index := -1
 			var name string
@@ -161,16 +162,20 @@ func main() {
 	if err != nil {
 		fmt.Printf("Scanner errored: %e", err)
 	}
-	fmt.Printf("Recipe title is: %s\n", recipe.Title)
-	fmt.Println("Ingredients as follows:")
-	for x, y := range recipe.Ingredients {
-		fmt.Printf("%v: %s", x, y)
-		fmt.Println()
-	}
-	fmt.Println("Steps as follows:")
-	for x, y := range recipe.Steps {
-		fmt.Printf("%v: %s", x, y)
-		fmt.Println()
-	}
 
+	// Print to test here
+	fmt.Printf("Recipe Title: %s", recipe.Title)
+	ingredients := recipe.Ingredients
+	steps := recipe.Steps
+	fmt.Printf("Number of ingredients: %v \n", len(ingredients))
+	fmt.Println("Listing out ingredients")
+	for i := range len(ingredients) {
+		fmt.Printf("Name: %-4s Quantity: %-4s Measurement: %-10s Prep: %-10s \n",
+			ingredients[i].Name, ingredients[i].Quantity, ingredients[i].Measurement, ingredients[i].Preparation)
+	}
+	fmt.Println("Number of steps: ", len(steps))
+	fmt.Println("Printing Steps")
+	for i := range steps {
+		fmt.Println(steps[i])
+	}
 }
