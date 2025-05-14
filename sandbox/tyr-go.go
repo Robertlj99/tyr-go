@@ -140,7 +140,7 @@ func importMarkdown(filepath string) (Recipe, error) {
 				if err != nil {
 					fmt.Printf("Error while parsing ingredients: %e", err)
 				}
-				recipe.Ingredients = append(recipe.Ingredients, ingredients)
+				recipe.Ingredients = append(recipe.Ingredients, ingredients...)
 			case 2:
 				recipe.Steps = append(recipe.Steps, line)
 			}
