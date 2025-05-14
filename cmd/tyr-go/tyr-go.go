@@ -4,9 +4,24 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"unicode"
 )
 
-var myData []string
+type Ingredient struct {
+	quantity    uint8    //keeping these small if you need over 255 of something thats a bad recipe
+	measurement string   //Going to need to specify these
+	name        string   //name of the ingredient
+	preparation string   //how to prepare the ingredient
+	meta        []string //metadata about the ingredient
+}
+
+type Recipe struct {
+	title       string       //title of the recipe
+	ingredients []Ingredient //slice of ingredient structures to store ingredients
+	steps       []string     //list of steps for the recipe
+}
+
+var myData Recipe
 
 func importMarkdown(filepath string) error {
 	// Open the file, check for error
@@ -18,10 +33,22 @@ func importMarkdown(filepath string) error {
 	// Close file after this function finishes
 	defer file.Close()
 
-	// Scan text into myData line by line
+	// Open a scanner and create the recipe
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		myData = append(myData, scanner.Text())
+		// Grab first line and make sure
+		line := scanner.Text()
+
+		// Check for leading # character, remember the first returned value is the index so _ throws it away
+		for _, ch := range line {
+			if unicode.IsSpace(ch) {
+				continue // Skip any leading whitespace
+			}
+			if ch == '#' {
+				//Recipe.title := line[1:]
+			}
+		}
+
 	}
 
 	// Check if scanner errored
@@ -43,8 +70,8 @@ func main() {
 	if err != nil {
 		fmt.Println("Something went wrong")
 	}
-	for x, y := range myData {
-		fmt.Println(x)
-		fmt.Println(y)
-	}
+	//for x, y := range myData {
+	//	fmt.Println(x)
+	//	fmt.Println(y)
+	//}
 }

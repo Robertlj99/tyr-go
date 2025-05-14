@@ -1,23 +1,24 @@
+# Creamy Chicken Enchilada Soup
 
 ## Ingredients
 
-- 1 tbsp butter
-- 1 medium onion, diced
-- 2 stalks of celery, sliced
-- 1 medium carrot, thinly sliced
-- 1 large bell pepper, diced
-- 2-3 garlic cloves, chopped
+- 1 tbsp Butter
+- 1 medium Onion diced
+- 2 stalks of Celery sliced
+- 1 medium Carrot thinly sliced
+- 1 large Bell Pepper diced
+- 2-3 cloves Garlic chopped
 - 1.5 tsp Cumin
-- 1 tbsp chili powder
+- 1 tbsp Chili Powder
 - 1 tsp Oregano
-- 15 ounces fire roasted tomatoes
-- 1/4 cup tomato paste (1/2 can fuck it)
+- 15 ounces Fire Roasted Tomatoes
+- 1/2 can Tomato Paste 
 - 4 cups Chicken Broth
-- 14.5 ounces kidney beans, drained and rinsed
-- 1 cup sweet corn, fresh or frozen
-- 2 cups shredded cooked chicken
-- 1 cup cheese, shredded
-- salt and pepper to taste
+- 14.5 ounces Kidney Beans drained and rinsed
+- 1 cup Sweet Corn fresh or frozen
+- 2 cups shredded cooked Chicken
+- 1 cup Cheese shredded
+- Salt and Pepper to taste
 
 ## Instructions
 
