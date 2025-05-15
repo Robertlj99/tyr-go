@@ -55,26 +55,40 @@ func parseIngredients(scanner *bufio.Scanner) ([]Ingredient, error) {
 			// Find title
 			line = strings.TrimPrefix(line, "-")
 			parts := strings.Fields(line)
-			index := -1
-			var name string
+			nameStart := -1
+
+			// Iterate through each string (parts) word by word (word)
 			for i, word := range parts {
 				if isCapital(word) {
-					name = word
-					index = i
+					nameStart = i
 					break
 				}
 			}
 
 			// If no capitalized word was found add empty ingredient
-			if index == -1 {
+			if nameStart == -1 {
 				ingredient := Ingredient{Name: "(Error)"}
 				ingredients = append(ingredients, ingredient)
 				break
 			}
 
+			// Find end of the name (last consecutive capitalized word)
+			nameEnd := nameStart
+
+			// Iterate from the first capitalized word until the line ends
+			for i := nameStart; i < len(parts); i++ {
+				if isCapital(parts[i]) {
+					nameEnd = i
+				}
+			}
+
+			// Build the name
+			nameSlice := parts[nameStart : nameEnd+1]
+			name := strings.Join(nameSlice, " ")
+
 			// Split rest of string into before and after
-			before := parts[:index]  // includes quantity and measurement if provided
-			after := parts[index+1:] //includes prep instructions if provided
+			before := parts[:nameStart]
+			after := parts[nameEnd+1:]
 
 			// Grab the amount and measurement, if both provided length will be > 1, if only one
 			// assume that it is amount, if none length will be 0
@@ -170,7 +184,7 @@ func main() {
 	fmt.Printf("Number of ingredients: %v \n", len(ingredients))
 	fmt.Println("Listing out ingredients")
 	for i := range len(ingredients) {
-		fmt.Printf("Name: %-4s Quantity: %-4s Measurement: %-10s Prep: %-10s \n",
+		fmt.Printf("Name: %-30s Quantity: %-10s Measurement: %-10s Prep: %-10s \n",
 			ingredients[i].Name, ingredients[i].Quantity, ingredients[i].Measurement, ingredients[i].Preparation)
 	}
 	fmt.Println("Number of steps: ", len(steps))
