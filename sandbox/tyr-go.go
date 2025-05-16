@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"unicode"
 )
@@ -170,15 +171,31 @@ func importMarkdown(filepath string) (Recipe, error) {
 }
 
 func main() {
-	fmt.Println("Hello")
-	filepath := `C:\Users\robert.johnson\Desktop\VSCode\Git Repos\tyr-go\assets\md-recipes\Creamy Chicken Enchilada Soup.md`
+	// Get current working directory
+	// This is used to get the path to the recipe file
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error getting current working directory")
+		panic(err)
+	}
+	fmt.Println("Current working directory: ", cwd)
+
+	// Get the parent directory of the current working directory
+	parentDir := filepath.Dir(cwd)
+	fmt.Println("Parent directory: ", parentDir)
+
+	// Create the path to the recipe file
+	filepath := filepath.Join(parentDir, "assets", "md-recipes", "Creamy Chicken Enchilada Soup.md")
+	fmt.Printf("File path: %s \n \n", filepath)
+
+	// Open the file and parse it
 	recipe, err := importMarkdown(filepath)
 	if err != nil {
 		fmt.Printf("Scanner errored: %e", err)
 	}
 
 	// Print to test here
-	fmt.Printf("Recipe Title: %s", recipe.Title)
+	fmt.Printf("Recipe Title: %s \n", recipe.Title)
 	ingredients := recipe.Ingredients
 	steps := recipe.Steps
 	fmt.Printf("Number of ingredients: %v \n", len(ingredients))
