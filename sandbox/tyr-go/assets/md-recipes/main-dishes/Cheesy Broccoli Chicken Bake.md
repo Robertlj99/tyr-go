@@ -1,3 +1,5 @@
+# Cheesy Broccoli Chicken Bake
+
 - Servings: 4 servings
 - Macros per serving: TODO
 - Time: 40 minutes
@@ -8,18 +10,18 @@
 - Baking dish (either individual glass meal prep containers or 9x13 baking dish)
 
 ## Ingredients
-- 1 lbs chicken breast 
-- 2 cloves garlic, minced 
-- ½ tsp salt 
-- ¼ tsp mustard powder 
-- ¼ tsp paprika 
-- Pepper 
-- 1 cup rice 
-- 1 cup chicken broth 
-- 1 ¼ cup  milk 
-- 2 oz cream cheese
-- 2 oz cheddar cheese 
-- 3-4 cups frozen broccoli
+- 1 lbs Chicken Breast cubed 
+- 2 cloves Garlic minced 
+- 1/4 tsp Salt 
+- 1/4 tsp Mustard Powder 
+- 1/4 tsp Paprika 
+- 1/4 tsp Pepper 
+- 1 cup Rice 
+- 1 cup Chicken Broth 
+- 1.25 cups Milk 
+- 2 oz Cream Cheese
+- 2 oz Cheddar Cheese shredded
+- 3-4 cups Frozen Broccoli
 
 ## Steps
 1. Preheat the oven to 400. Lightly grease the baking dish. 

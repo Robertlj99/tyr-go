@@ -42,8 +42,9 @@ func main() {
 		cwd = parent
 	}
 
-	// Create the path to the recipe file
-	filepath := filepath.Join(cwd, "assets", "md-recipes", "Creamy Chicken Enchilada Soup.md")
+	//EXISTING WORK
+	// Create the path to the recipe directory
+	filepath := filepath.Join(cwd, "assets", "md-recipes")
 	fmt.Printf("File path: %s \n \n", filepath)
 
 	// Open the file and parse it
@@ -67,4 +68,5 @@ func main() {
 	for i := range steps {
 		fmt.Println(steps[i])
 	}
+	fmt.Println()
 }

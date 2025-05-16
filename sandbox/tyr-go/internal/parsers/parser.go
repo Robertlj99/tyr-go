@@ -45,65 +45,68 @@ func ImportMarkdown(filepath string) (Recipe, error) {
 		} else if line != "" {
 			switch current {
 			case 1:
-				// Find title
-				line = strings.TrimPrefix(line, "-")
-				parts := strings.Fields(line)
-				nameStart := -1
+				// Adding this to support seperating out ingredients i.e. salad and dressing for chicken salad
+				if strings.HasPrefix(line, "-") {
+					// Find title
+					line = strings.TrimPrefix(line, "-")
+					parts := strings.Fields(line)
+					nameStart := -1
 
-				// Iterate through each string (parts) word by word (word)
-				for i, word := range parts {
-					if isCapital(word) {
-						nameStart = i
+					// Iterate through each string (parts) word by word (word)
+					for i, word := range parts {
+						if isCapital(word) {
+							nameStart = i
+							break
+						}
+					}
+
+					// If no capitalized word was found add empty ingredient
+					if nameStart == -1 {
+						ingredient := Ingredient{Name: "(Error)"}
+						recipe.Ingredients = append(recipe.Ingredients, ingredient)
 						break
 					}
-				}
 
-				// If no capitalized word was found add empty ingredient
-				if nameStart == -1 {
-					ingredient := Ingredient{Name: "(Error)"}
-					recipe.Ingredients = append(recipe.Ingredients, ingredient)
-					break
-				}
+					// Find end of the name (last consecutive capitalized word)
+					nameEnd := nameStart
 
-				// Find end of the name (last consecutive capitalized word)
-				nameEnd := nameStart
-
-				// Iterate from the first capitalized word until the line ends
-				for i := nameStart; i < len(parts); i++ {
-					if isCapital(parts[i]) {
-						nameEnd = i
+					// Iterate from the first capitalized word until the line ends
+					for i := nameStart; i < len(parts); i++ {
+						if isCapital(parts[i]) {
+							nameEnd = i
+						}
 					}
+
+					// Build the name
+					nameSlice := parts[nameStart : nameEnd+1]
+					name := strings.Join(nameSlice, " ")
+
+					// Split rest of string into before and after
+					before := parts[:nameStart]
+					after := parts[nameEnd+1:]
+
+					// Grab the amount and measurement, if both provided length will be > 1, if only one
+					// assume that it is amount, if none length will be 0
+					var quantity, measurement string
+					if len(before) > 0 {
+						quantity = before[0]
+					}
+					if len(before) > 1 {
+						measurement = before[1]
+					}
+
+					// Everything after title is prep instructions
+					prep := strings.Join(after, " ")
+
+					// Create ingredient and append it to ingredients list
+					ingredient := Ingredient{
+						Quantity:    quantity,
+						Measurement: measurement,
+						Name:        name,
+						Preparation: prep,
+					}
+					recipe.Ingredients = append(recipe.Ingredients, ingredient)
 				}
-
-				// Build the name
-				nameSlice := parts[nameStart : nameEnd+1]
-				name := strings.Join(nameSlice, " ")
-
-				// Split rest of string into before and after
-				before := parts[:nameStart]
-				after := parts[nameEnd+1:]
-
-				// Grab the amount and measurement, if both provided length will be > 1, if only one
-				// assume that it is amount, if none length will be 0
-				var quantity, measurement string
-				if len(before) > 0 {
-					quantity = before[0]
-				}
-				if len(before) > 1 {
-					measurement = before[1]
-				}
-
-				// Everything after title is prep instructions
-				prep := strings.Join(after, " ")
-
-				// Create ingredient and append it to ingredients list
-				ingredient := Ingredient{
-					Quantity:    quantity,
-					Measurement: measurement,
-					Name:        name,
-					Preparation: prep,
-				}
-				recipe.Ingredients = append(recipe.Ingredients, ingredient)
 			case 2:
 				recipe.Steps = append(recipe.Steps, line)
 			}
