@@ -1,27 +1,11 @@
-package main
+package parsers
 
 import (
 	"bufio"
-	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 	"unicode"
 )
-
-type Ingredient struct {
-	Quantity    string //string to represent numbers like 1/4
-	Measurement string //Going to need to specify these
-	Name        string //name of the ingredient
-	Preparation string //how to prepare the ingredient
-	// meta        []string //metadata about the ingredient
-}
-
-type Recipe struct {
-	Title       string
-	Ingredients []Ingredient
-	Steps       []string
-}
 
 // Checks the first letter of the word to determine of it is capitalized
 // Using this to determine ingredient title
@@ -33,7 +17,7 @@ func isCapital(word string) bool {
 	return unicode.IsUpper(r)
 }
 
-func importMarkdown(filepath string) (Recipe, error) {
+func ImportMarkdown(filepath string) (Recipe, error) {
 	var recipe Recipe
 
 	// Open file
@@ -131,45 +115,4 @@ func importMarkdown(filepath string) (Recipe, error) {
 	}
 
 	return recipe, nil
-}
-
-func main() {
-	// Get current working directory
-	// This is used to get the path to the recipe file
-	cwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println("Error getting current working directory")
-		panic(err)
-	}
-	fmt.Println("\nCurrent working directory: ", cwd)
-
-	// Get the parent directory of the current working directory
-	parentDir := filepath.Dir(cwd)
-	fmt.Println("Parent directory: ", parentDir)
-
-	// Create the path to the recipe file
-	filepath := filepath.Join(parentDir, "assets", "md-recipes", "Creamy Chicken Enchilada Soup.md")
-	fmt.Printf("File path: %s \n \n", filepath)
-
-	// Open the file and parse it
-	recipe, err := importMarkdown(filepath)
-	if err != nil {
-		fmt.Printf("Scanner errored: %e", err)
-	}
-
-	// Print to test here
-	fmt.Printf("Recipe Title: %s \n", recipe.Title)
-	ingredients := recipe.Ingredients
-	steps := recipe.Steps
-	fmt.Printf("\nNumber of ingredients: %v \n", len(ingredients))
-	fmt.Println("Listing out ingredients")
-	for i := range len(ingredients) {
-		fmt.Printf("Quantity: %-10s Measurement: %-10s Name: %-30s Prep: %-10s \n",
-			ingredients[i].Quantity, ingredients[i].Measurement, ingredients[i].Name, ingredients[i].Preparation)
-	}
-	fmt.Println("\nNumber of steps: ", len(steps))
-	fmt.Println("Printing Steps")
-	for i := range steps {
-		fmt.Println(steps[i])
-	}
 }
