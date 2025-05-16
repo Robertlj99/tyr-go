@@ -34,7 +34,7 @@ func main() {
 		// If we can find the root tyr-go/ directory then the rest of the files will not be where
 		// the program expects them so it is not time to panic
 		if parent == cwd {
-			fmt.Println("Reached rot without finding valid directory, please reinstall or repair")
+			fmt.Println("Reached root without finding valid directory, please reinstall or repair")
 			return
 		}
 
