@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/Robertlj99/tyr-go/internal/parsers"
 )
@@ -42,31 +44,75 @@ func main() {
 		cwd = parent
 	}
 
-	//EXISTING WORK
-	// Create the path to the recipe directory
-	filepath := filepath.Join(cwd, "assets", "md-recipes")
-	fmt.Printf("File path: %s \n \n", filepath)
+	// Finally, make the filepath
+	dirPath := filepath.Join(cwd, "assets", "md-recipes")
+	fmt.Printf("File path: %s \n \n", dirPath)
 
-	// Open the file and parse it
-	recipe, err := parsers.ImportMarkdown(filepath)
+	// Slice to store the recipes
+	var recipes []parsers.Recipe
+
+	// Tracking categories, may remove this but may be useful
+	categories := make(map[string]int)
+
+	// Recursive walk through directories
+	err = filepath.Walk(dirPath, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			fmt.Printf("Error accessing path %s: %v\n", path, err)
+			return nil // Keep trying to access files despite error
+		}
+
+		// Don't process directories
+		if info.IsDir() {
+			return nil
+		}
+
+		// Don't process any non-markdown files
+		if !strings.HasSuffix(strings.ToLower(path), ".md") {
+			return nil
+		}
+
+		// Import the recipe
+		recipe, err := parsers.ImportMarkdown(path)
+		if err != nil {
+			fmt.Printf("Error importing recipe %s: %v\n", path, err)
+			return nil
+		}
+
+		//Get category using the path
+		relPath, _ := filepath.Rel(dirPath, path)
+		category := filepath.Dir(relPath)
+		if category == "." {
+			category = "uncategorized"
+		}
+
+		categories[category]++
+
+		recipes = append(recipes, recipe)
+
+		return nil
+	})
+
 	if err != nil {
-		fmt.Printf("Scanner errored: %e", err)
+		fmt.Printf("Error while walking filepath: %v\n", err)
+		return
 	}
 
-	// Print to test here
-	fmt.Printf("Recipe Title: %s \n", recipe.Title)
-	ingredients := recipe.Ingredients
-	steps := recipe.Steps
-	fmt.Printf("\nNumber of ingredients: %v \n", len(ingredients))
-	fmt.Println("Listing out ingredients")
-	for i := range len(ingredients) {
-		fmt.Printf("Quantity: %-10s Measurement: %-10s Name: %-30s Prep: %-10s \n",
-			ingredients[i].Quantity, ingredients[i].Measurement, ingredients[i].Name, ingredients[i].Preparation)
+	fmt.Printf("\nSuccesfull import of %d recipes\n", len(recipes))
+	fmt.Println("\nRecipes by category:")
+	for category, count := range categories {
+		fmt.Printf("- %s: %d recipes\n", category, count)
 	}
-	fmt.Println("\nNumber of steps: ", len(steps))
-	fmt.Println("Printing Steps")
-	for i := range steps {
-		fmt.Println(steps[i])
+
+	fmt.Println("\nIndividiual Recipes")
+	for i, recipe := range recipes {
+		fmt.Printf("\n%d. %s\n", i+1, recipe.Title)
+		for _, ingredients := range recipe.Ingredients {
+			fmt.Printf("Quantity: %-10s Measurement: %-10s Name: %-30s Prep: %-10s \n",
+				ingredients.Quantity, ingredients.Measurement, ingredients.Name, ingredients.Preparation)
+		}
+		fmt.Println("\nSteps:")
+		for _, steps := range recipe.Steps {
+			fmt.Println(steps)
+		}
 	}
-	fmt.Println()
 }
