@@ -5,6 +5,7 @@
 # config dir
 .obsidian/
 
-
+### Visual Studio Code ###
+.vscode/
 
 # End of https://www.toptal.com/developers/gitignore/api/obsidian
