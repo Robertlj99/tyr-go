@@ -86,6 +86,7 @@ func main() {
 		}
 
 		categories[category]++
+		recipe.Category = category
 
 		recipes = append(recipes, recipe)
 

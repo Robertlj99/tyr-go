@@ -26,6 +26,7 @@ type Ingredient struct {
 //		Steps: A slice of strings explaining how to prepare the ingredients (aka Instructions)
 type Recipe struct {
 	Title       string
+	Category    string
 	Ingredients []Ingredient
 	Steps       []string
 }
