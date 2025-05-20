@@ -106,7 +106,7 @@ func main() {
 
 	fmt.Println("\nIndividiual Recipes")
 	for i, recipe := range recipes {
-		fmt.Printf("\n%d. %s\n", i+1, recipe.Title)
+		fmt.Printf("\n%d. %s %s\n", i+1, recipe.Title, recipe.Category)
 		for _, ingredients := range recipe.Ingredients {
 			fmt.Printf("Quantity: %-10s Measurement: %-10s Name: %-30s Prep: %-10s \n",
 				ingredients.Quantity, ingredients.Measurement, ingredients.Name, ingredients.Preparation)
